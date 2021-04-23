@@ -1,6 +1,9 @@
 #ifndef BARRYJSON_H__
 #define BARRYJSON_H__
 
+#define ISDIGIT(c) ( ((c) >= '0') && ((c) <= '9') )
+#define ISDIGIT1TO9 (c) ( ((c) >= '1') && ((c) <= '9') )
+
 typedef enum{
 	BARY_NULL,
 	BARY_TRUE,

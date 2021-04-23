@@ -58,19 +58,37 @@ static void test_parse_false(){
 	EXPECT_EQ_INT(BARY_FALSE, bary_get_type(&v));
 }
 
+static void test_parse_number(){
+	TEST_NUMBER(0.0, "0");
+	TEST_NUMBER(0.0, "-0");
+	TEST_NUMBER(0.0, "-0.0");
+	TEST_NUMBER(1.0, "1");
+	TEST_NUMBER(-1.0, "-1");
+	TEST_NUMBER(1.5, "1.5");
+	TEST_NUMBER(-1.5, "-1.5");
+	TEST_NUMBER(3.1416, "3.1416");
+	TEST_NUMBER(1E10, "1E10");
+	TEST_NUMBER(1e10, "1e10");
+	TEST_NUMBER(1E+10, "1E+10");
+	TEST_NUMBER(1E-10, "1E-10");
+	TEST_NUMBER(-1E10, "-1E10");
+	TEST_NUMBER(-1e10, "-1e10");
+	TEST_NUMBER(-1E+10, "-1E+10");
+	TEST_NUMBER(-1E-10, "-1E-10");
+	TEST_NUMBER(1.234E+10, "1.234E+10");
+	TEST_NUMBER(1.234E-10, "1.234E-10");
+	TEST_NUMBER(0.0, "1e-10000");
+}
+
 static void test(){
 	test_parse_null();
 	test_parse_true();
 	test_parse_false();
+	test_parse_number();
 }
 
 int main(){
-	char* str = "0.55556";
-	char* endChar;
-	double num = strtod(&str, &endChar);
-	printf("%s", str);
-
-	//test();
-	//printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
+	test();
+	printf("%d/%d (%3.2f%%) passed\n", test_pass, test_count, test_pass * 100.0 / test_count);
 	return 0;
 }	

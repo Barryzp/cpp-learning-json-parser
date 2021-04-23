@@ -3,7 +3,7 @@
 #include "assert.h"
 #include "stdlib.h"
 
-#define EXPECT(c, ch) do { assert(*c->json == (ch)); c->json++; } while (0);
+#define EXPECT(c, ch) do { assert(*c->json == (ch)); c->json++; } while (0)
 
 typedef struct{
 	const char* json;
@@ -18,7 +18,7 @@ static void bary_parse_whitespace(bary_context* c){
 }
 
 static int bary_parse_literal(bary_context *c, bary_value *v, const char* right_match, int parse_succ_type){
-	int str_len = strlen(right_match);
+	size_t str_len = strlen(right_match);
 	for (int i = 0; i < str_len; i++){
 		if (c->json[i] != right_match[i]){
 			return BARY_PARSE_INVALID_VALUE;
@@ -63,7 +63,20 @@ static int bary_parse_false(bary_context* c, bary_value* v){
 	return BARY_PARSE_OK;
 }
 
-
+static int bary_parse_number(bary_context* c, bary_value* v){
+	char* end;
+	/* 负数 */
+	/* 整数 */
+	/* 小数 */
+	/* 指针 */
+	v->n = strtod(c->json, &end);
+	if (c->json == end){
+		return BARY_PARSE_INVALID_VALUE;
+	}
+	c->json = end;
+	v->type = BARY_NUMBER;
+	return BARY_PARSE_OK;
+}
 
 int bary_parse_value(bary_context* c, bary_value* v){
 	switch (*c->json)
@@ -77,7 +90,7 @@ int bary_parse_value(bary_context* c, bary_value* v){
 	case '\0':
 		return BARY_PARSE_EXPECT_VALUE;
 	default:
-		return BARY_PARSE_INVALID_VALUE;
+		return bary_parse_number(c, v);
 	}
 }
 
